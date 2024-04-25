@@ -1,0 +1,15 @@
+chapter AFP
+
+session ZFC_in_HOL = HOL +
+  options [timeout = 600]
+  sessions
+    "HOL-Library"
+    "HOL-Analysis"
+    "HOL-Cardinals"
+  theories
+    Cantor_NF
+    ZFC_Typeclasses
+    General_Cardinals
+  document_files
+    "root.tex"
+    "root.bib"

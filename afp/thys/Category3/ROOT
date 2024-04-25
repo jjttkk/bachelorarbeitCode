@@ -1,0 +1,11 @@
+chapter AFP
+
+session "Category3" = "HOL-Library" +
+  options [timeout = 3600, names_unique = false]
+  sessions
+    "HereditarilyFinite" "ZFC_in_HOL"
+  theories
+    EquivalenceOfCategories HF_SetCat_Interp ZFC_SetCat_Interp
+  document_files
+    "root.bib"
+    "root.tex"

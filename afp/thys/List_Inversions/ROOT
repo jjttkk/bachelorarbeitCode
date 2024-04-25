@@ -1,0 +1,11 @@
+chapter AFP
+
+session "List_Inversions" = HOL +
+  options [timeout = 300]
+  sessions
+    "HOL-Combinatorics"
+  theories
+    List_Inversions
+  document_files
+    "root.tex"
+    "root.bib"

@@ -1,0 +1,11 @@
+chapter AFP
+
+session XML = "HOL-Library" +
+  options [timeout = 600]
+  sessions
+    Certification_Monads
+    Show
+  theories
+    Xmlt
+  document_files
+    "root.tex"

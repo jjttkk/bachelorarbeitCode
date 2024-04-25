@@ -1,0 +1,24 @@
+chapter AFP
+
+session Rewrite_Properties_Reduction = "HOL-Library" +
+  options [timeout = 600]
+  sessions
+    "Regular_Tree_Relations"
+  directories
+    "Util"
+    "Rewriting"
+  theories
+    "Util/Terms_Positions"
+  theories
+    "Rewriting/Rewriting"
+    "Rewriting/Replace_Constant"
+    "Rewriting/Rewriting_Properties"
+    "Rewriting/Rewriting_LLRG_LV_Mondaic"
+    "Rewriting/Rewriting_GTRS"
+  theories
+    "Ground_Reduction_on_LLRG"
+    "Ground_Reduction_on_GTRS"
+    "Ground_Reduction_on_LV"
+  document_files
+    "root.tex"
+    "root.bib"

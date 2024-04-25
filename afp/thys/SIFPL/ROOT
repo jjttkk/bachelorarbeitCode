@@ -1,0 +1,11 @@
+chapter AFP
+
+session SIFPL = HOL +
+  options [timeout = 600]
+  theories
+    ContextVS
+    HuntSands
+    ContextOBJ
+  document_files
+    "root.bib"
+    "root.tex"

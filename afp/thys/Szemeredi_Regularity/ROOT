@@ -1,0 +1,10 @@
+chapter AFP
+
+session Szemeredi_Regularity = Girth_Chromatic +
+  options [timeout = 600]
+  theories
+    Szemeredi
+  document_files
+    "root.tex"
+    "root.bib"
+

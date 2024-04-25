@@ -1,0 +1,15 @@
+chapter AFP
+
+session Affine_Arithmetic = "HOL-Analysis" +
+  options [timeout = 2400]
+  sessions
+    "HOL-Decision_Procs"
+    "HOL-Combinatorics"
+    "List-Index"
+    Deriving
+    Show
+  theories
+    Affine_Arithmetic
+  document_files
+    "root.tex"
+    "root.bib"

@@ -1,0 +1,8 @@
+chapter AFP
+
+session Valuation = "Group-Ring-Module" +
+  options [timeout = 600]
+  theories
+    Valuation3
+  document_files
+    "root.tex"

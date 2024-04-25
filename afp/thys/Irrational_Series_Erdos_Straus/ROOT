@@ -1,0 +1,10 @@
+chapter AFP
+
+session Irrational_Series_Erdos_Straus = Prime_Distribution_Elementary +
+  options [timeout = 300]
+  theories
+    Irrational_Series_Erdos_Straus
+  document_files
+    "root.tex"
+    "root.bib"
+

@@ -1,0 +1,16 @@
+chapter AFP
+
+session Probabilistic_While = "HOL-Probability" +
+  options [timeout = 600]
+  sessions
+    MFMC_Countable
+    "HOL-Types_To_Sets" 
+  theories
+    While_SPMF
+    Bernoulli
+    Geometric
+    Fast_Dice_Roll
+    Resampling
+  document_files
+    "root.bib"
+    "root.tex"

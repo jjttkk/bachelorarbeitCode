@@ -1,0 +1,11 @@
+chapter AFP
+
+session Probability_Inequality_Completeness = Suppes_Theorem +
+  options [timeout = 600]
+  sessions
+    "HOL-Library"
+  theories
+    Probability_Inequality_Completeness
+  document_files
+    "root.tex"
+    "root.bib"

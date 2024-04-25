@@ -1,0 +1,25 @@
+chapter AFP
+
+session "Topological_Semantics" = "HOL" +
+  options [timeout = 600]
+  theories
+    boolean_algebra
+    boolean_algebra_infinitary
+    boolean_algebra_operators
+    conditions_positive
+    conditions_positive_infinitary
+    conditions_negative
+    conditions_negative_infinitary
+    conditions_relativized
+    conditions_relativized_infinitary
+    logics_consequence
+    logics_operators
+    logics_negation
+    logics_quantifiers
+    logics_quantifiers_example
+    logics_LFI
+    logics_LFU
+
+  document_files
+    "root.tex"
+    "root.bib"

@@ -1,0 +1,17 @@
+chapter AFP
+
+session Intro_Dest_Elim = HOL +
+  options [timeout=600]
+  sessions
+    "HOL-Library"
+  theories[document = false]
+    IHOL_IDE
+    Reference_Prerequisites
+  theories
+    IDE_Reference
+  document_files
+    "iman.sty"
+    "extra.sty"
+    "isar.sty"
+    "root.tex"
+    "root.bib"

@@ -1,0 +1,9 @@
+chapter AFP
+
+session Knights_Tour = HOL +
+  options [timeout=300]
+  theories
+    KnightsTour
+  document_files
+    "root.bib"
+    "root.tex"

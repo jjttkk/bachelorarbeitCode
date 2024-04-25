@@ -1,0 +1,12 @@
+chapter AFP
+
+session Derangements = HOL +
+  options [timeout = 600]
+  sessions
+    "HOL-Library"
+    "HOL-Combinatorics"
+  theories
+    Derangements
+  document_files
+    "root.tex"
+    "root.bib"

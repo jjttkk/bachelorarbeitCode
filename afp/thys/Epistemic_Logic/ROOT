@@ -1,0 +1,10 @@
+chapter AFP
+
+session Epistemic_Logic = "HOL-Cardinals" +
+  options [timeout = 300]
+  theories
+    Epistemic_Logic
+    Maximal_Consistent_Sets
+  document_files
+    "root.tex"
+    "root.bib"

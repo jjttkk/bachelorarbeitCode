@@ -1,0 +1,13 @@
+chapter AFP
+
+session Card_Partitions = HOL +
+  options [timeout = 600]
+  sessions
+    "HOL-Combinatorics"
+    "HOL-Eisbach"
+    Discrete_Summation
+  theories
+    Card_Partitions
+  document_files
+    "root.bib"
+    "root.tex"

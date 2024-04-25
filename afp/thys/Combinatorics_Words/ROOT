@@ -1,0 +1,18 @@
+chapter AFP
+
+session Combinatorics_Words  = "HOL-Eisbach" +
+  options [timeout = 600]
+  theories
+    Arithmetical_Hints
+    Border_Array
+    Reverse_Symmetry
+    CoWBasic
+    Submonoids
+    Morphisms
+    Periodicity_Lemma
+    Equations_Basic
+    Binary_Code_Morphisms
+    Lyndon_Schutzenberger
+  document_files
+    root.tex
+    root.bib

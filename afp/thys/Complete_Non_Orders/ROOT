@@ -1,0 +1,12 @@
+chapter AFP
+
+session Complete_Non_Orders = HOL +
+  description "Fixed-Point Theorems for Non-Transitive Relations"
+  options [timeout = 300]
+  sessions
+    "HOL-Library"
+  theories
+    Fixed_Points Kleene_Fixed_Point
+  document_files
+    "root.tex"
+    "root.bib"

@@ -1,0 +1,32 @@
+chapter AFP
+
+session "Solidity" = "HOL-Library" +
+  options [timeout = 7200]
+  sessions
+    "HOL-Eisbach"
+    "Finite-Map-Extras"
+  theories
+    Utils
+    ReadShow
+    StateMonad
+    Valuetypes
+    Storage
+    Accounts
+    Environment
+    Contracts
+    Expressions
+    Statements
+    Solidity_Main
+    Solidity_Symbex
+    Solidity_Evaluator
+    Weakest_Precondition
+    Reentrancy
+    Constant_Folding
+  theories [condition = ISABELLE_GHC]
+    Compile_Evaluator
+  document_files
+    "root.tex"
+    "root.bib"
+    "orcidlink.sty"
+  export_files (in ".") [2] "*:**.hs" "*:**.ML"
+  export_files (in "solidity-evaluator/bin") [1] "*:solidity-evaluator"

@@ -1,0 +1,8 @@
+chapter AFP
+
+session "GoedelGod" = "HOL" +
+  options [timeout = 600]
+  theories GoedelGod
+  document_files
+    "root.tex"
+    "root.bib"

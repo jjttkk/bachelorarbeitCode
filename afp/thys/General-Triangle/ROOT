@@ -1,0 +1,9 @@
+chapter AFP
+
+session "General-Triangle" = HOL +
+  options [timeout = 600]
+  theories
+    GeneralTriangle
+  document_files
+    "root.bib"
+    "root.tex"

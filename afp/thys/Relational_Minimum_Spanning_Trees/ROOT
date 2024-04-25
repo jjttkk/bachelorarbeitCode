@@ -1,0 +1,18 @@
+chapter AFP
+
+session Relational_Minimum_Spanning_Trees = Relational_Disjoint_Set_Forests +
+
+  options [timeout = 600]
+
+  sessions
+    "HOL-Hoare"
+
+  theories
+    Kruskal
+    Prim
+    Boruvka
+
+  document_files
+    "root.tex"
+    "root.bib"
+

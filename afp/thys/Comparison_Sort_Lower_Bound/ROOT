@@ -1,0 +1,14 @@
+chapter AFP
+
+session Comparison_Sort_Lower_Bound = Stirling_Formula +
+  options [timeout = 300]
+  sessions
+    "HOL-Combinatorics"
+    "List-Index"
+    Landau_Symbols
+  theories
+    Linorder_Relations
+    Comparison_Sort_Lower_Bound
+  document_files
+    "root.tex"
+    "root.bib"
