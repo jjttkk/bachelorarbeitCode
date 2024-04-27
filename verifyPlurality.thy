@@ -1,16 +1,14 @@
 theory verifyPlurality imports
-"afp/thys/Game_Based_Crypto/Elgamal"
+"Game_Based_Crypto.Elgamal"
 begin
 
-type_synonym 'a' pub_key = "'a'"
-type_synonym 'a' priv_key = nat
-type_synonym 'a' plain = 'a'
-type_synonym 'a' cipher = "'a' \<times> 'a'"
+context ind_cpa
+begin
 
-fun ballotEncrypt :: "'a pub_key \<Rightarrow> 'a list \<Rightarrow> 'a cipher list spmf" 
+fun ballotEncrypt :: "'grp pub_key \<Rightarrow> 'a list \<Rightarrow> 'a cipher list spmf" 
   where
-   ballotEncryptNil: "ballotEncrypt [] = []" |
-   ballotEncryptCons: "ballotEncrypt (x # xs) = (aencrypt pub_key x) # ballotEncrypt pub_key  xs"
+   ballotEncryptNil: "ballotEncrypt pk [] = []" |
+   ballotEncryptCons: "ballotEncrypt (x # xs) = (aencrypt pk x) # ballotEncrypt pk  xs"
 
 fun ballotDecrypt :: "'a priv_key \<Rightarrow> 'a cipher list \<Rightarrow> 'a option"
   where 
