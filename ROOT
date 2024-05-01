@@ -9,20 +9,15 @@
  *
  *  isabelle jedit -d `pwd` -l verifyPlurality
  *    # use an image for interactive mode; probably similar for servermode.
- *
- * Theories can then be accessed as, e.g., "Verified_Voting_Rule_Construction.Preference_Relation"
- *)
+ * *)
 
 chapter browser_info
 
 session verifyPlurality = HOL +
   description
-    \<open>Verified Construction of Fair Voting Rules\<close>
+    \<open>verify plurality voting rule\<close>
   options [timeout = 400, browser_info, document = pdf, document_output = "output",
             document_variants = "document:outline=/proof,/ML"]
-
-  sessions
-    "Verified_Voting_Rule_Construction"
     
   directories
     "afp/thys"
@@ -35,5 +30,4 @@ session verifyPlurality = HOL +
     "afp/thys/verifiedVotingRuleConstruction/theories/Plurality_Rule"
 
 
-  document_files
-  
+ 
