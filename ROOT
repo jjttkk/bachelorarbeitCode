@@ -18,7 +18,14 @@ session verifyPlurality = HOL +
     \<open>verify plurality voting rule\<close>
   options [timeout = 400, browser_info, document = pdf, document_output = "output",
             document_variants = "document:outline=/proof,/ML"]
-    
+  sessions
+    "HOL-Library"
+    "HOL-Analysis"
+    "HOL-Combinatorics"
+    "HOL-Algebra"
+    "List-Index"
+    "Collections"
+ 
   directories
     "afp/thys"
     "afp/thys/Game_Based_Crypto"
