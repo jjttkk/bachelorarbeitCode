@@ -36,5 +36,8 @@ session verifyPlurality = HOL +
     "afp/thys/Game_Based_Crypto/Elgamal"
     "afp/thys/verifiedVotingRuleConstruction/theories/Plurality_Rule"
 
-
+  document_files
+    "root.tex"
+    "settings.tex"
+    "root.bib"
  
