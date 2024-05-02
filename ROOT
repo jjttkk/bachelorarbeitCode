@@ -13,8 +13,8 @@
 
 chapter browser_info
 
-session verifyPlurality = HOL +
-  description
+session verifyPlurality = 
+description
     \<open>verify plurality voting rule\<close>
   options [timeout = 400, browser_info, document = pdf, document_output = "output",
             document_variants = "document:outline=/proof,/ML"]
