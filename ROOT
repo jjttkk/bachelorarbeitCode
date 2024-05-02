@@ -13,7 +13,7 @@
 
 chapter browser_info
 
-session verifyPlurality = HOL +
+session verifyPlurality = HOL + Game_Based_Crypto + Verified_Voting_Rule_Construction
 description
     \<open>verify plurality voting rule\<close>
   options [timeout = 400, browser_info, document = pdf, document_output = "output",
@@ -33,6 +33,8 @@ description
     "afp/thys/verifiedVotingRuleConstruction/theories"
 
   theories
+    "Game_Based_Crypto"
+    "verifiedVotingRuleConstruction"
     "afp/thys/Game_Based_Crypto/Elgamal"
     "afp/thys/verifiedVotingRuleConstruction/theories/Plurality_Rule"
 
