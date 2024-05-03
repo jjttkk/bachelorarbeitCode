@@ -13,7 +13,7 @@
 
 chapter browser_info
 
-session verifyPlurality = HOL + Game_Based_Crypto + Verified_Voting_Rule_Construction
+session verifyPlurality = Game_Based_Crypto + Verified_Voting_Rule_Construction +
 description
     \<open>verify plurality voting rule\<close>
   options [timeout = 400, browser_info, document = pdf, document_output = "output",
