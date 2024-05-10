@@ -1,25 +1,33 @@
 theory verifyPlurality imports
+"verifyEncryptionDecryption"
 "Game_Based_Crypto.Elgamal"
+"verifiedVotingRuleConstruction/theories/Compositional_Structures/Basic_Modules/Component_Types/Social_Choice_Types/Refined_Types/Preference_List"
 begin
 
-context elgamal_base
-begin
+datatype ('a, 'b) ballot = Nil | Cons "('a \<times> 'b)" "('a, 'b) ballot"
 
-fun ballotEncrypt :: "'grp pub_key \<Rightarrow> 'grp list \<Rightarrow> 'grp cipher spmf list" 
+definition one :: "nat" where "one =  1"
+definition zeros :: "nat list" where "zeros = replicate 0 (0::nat)"
+definition plurality_values :: "nat list" where "plurality_values = one # zeros"
+
+
+(*nat list is list of preferences, [1,0,0,...] for Plurality-Voting
+  Preference_List already encrypted*)
+fun convert_preferencelist_to_ballot :: "'a Preference_list \<Rightarrow> plurality_values \<Rightarrow> ('a, 'b)  ballot"
   where
-   ballotEncryptNil: "ballotEncrypt pk [] = []" |
-   ballotEncryptCons: "ballotEncrypt pk (x # xs) = (aencrypt pk x) # ballotEncrypt pk xs"
+   "convert_preferencelist_to_ballot [] _ = Nil" |
+   "convert_preferencelist_to_ballot (x # xs) (y # ys) = Cons(x, aencrypt (y)) (convert_preferencelist_to_ballot xs ys) "
 
-fun ballotDecrypt :: "'grp priv_key \<Rightarrow> 'grp cipher list \<Rightarrow> 'grp option list"
-  where 
-    ballotDecryptNil: "ballotDecrypt sk [] = []" |
-    ballotDecryptCons: "ballotDecrypt sk (x # xs) = (adecrypt sk x) # ballotDecrypt sk xs"
+(*first ballot is new ballot to add,
+ second ballot is Sum-Ballot which holds final result at the end*)
+fun add_ballots :: "ballot \<Rightarrow> ballot \<Rightarrow> ballot "
+  where
+  "add_ballots [] sum_ballot = sum_ballot"|
+  "add_ballots ((option_a, value_a) # options) sum_ballot = 
+  (case find (\<lambda>(option_b, value_b). option_a = option_b) sum_ballot of
+    None \<Rightarrow> add_ballots options sum_ballot |
+    Some"
+    
 
-(*lemma enc_dec:
-    "ballotEncrypt pub_key (ballotDecrypt priv_key xs) = xs"*)
-(*lemma dec_enc:
-    "ballotDecrypt priv_key (ballotEncrypt pub_key xs) = xs"*)
-
-end
 
 end
