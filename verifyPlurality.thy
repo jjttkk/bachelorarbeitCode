@@ -13,7 +13,7 @@ definition plurality_values :: "nat list" where "plurality_values = one # zeros"
 
 (*nat list is list of preferences, [1,0,0,...] for Plurality-Voting
   Preference_List already encrypted*)
-fun convert_preferencelist_to_ballot :: "'a Preference_list \<Rightarrow> plurality_values \<Rightarrow> ('a, 'b)  ballot"
+fun convert_preferencelist_to_ballot :: "'a Preference_List \<Rightarrow> nat list \<Rightarrow> ('a, 'b)  ballot"
   where
    "convert_preferencelist_to_ballot [] _ = Nil" |
    "convert_preferencelist_to_ballot (x # xs) (y # ys) = Cons(x, aencrypt (y)) (convert_preferencelist_to_ballot xs ys) "
@@ -23,10 +23,10 @@ fun convert_preferencelist_to_ballot :: "'a Preference_list \<Rightarrow> plural
 fun add_ballots :: "ballot \<Rightarrow> ballot \<Rightarrow> ballot "
   where
   "add_ballots [] sum_ballot = sum_ballot"|
-  "add_ballots ((option_a, value_a) # options) sum_ballot = 
-  (case find (\<lambda>(option_b, value_b). option_a = option_b) sum_ballot of
+  "add_ballots ((option_sum, value_b) # options) sum_ballot = 
+  (case find (\<lambda>(option_sum, value_sum). option_b = option_sum) sum_ballot of
     None \<Rightarrow> add_ballots options sum_ballot |
-    Some"
+    Some (option_sum, value_sum) \<Rightarrow> (option_sum,value_sum + value_b) # add ballots options sum ballot "
     
 
 
