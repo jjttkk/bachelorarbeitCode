@@ -1,4 +1,4 @@
-theory verifyPlurality imports
+theory verifyBorda imports
 (*"verifyEncryptionDecryption"*)
 "Game_Based_Crypto.Elgamal"
 "verifiedVotingRuleConstruction/theories/Compositional_Structures/Basic_Modules/Component_Types/Social_Choice_Types/Refined_Types/Preference_List"
