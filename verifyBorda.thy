@@ -1,46 +1,46 @@
 theory verifyBorda imports
-(*"verifyEncryptionDecryption"*)
 "Game_Based_Crypto.Elgamal"
 "verifiedVotingRuleConstruction/theories/Compositional_Structures/Basic_Modules/Component_Types/Social_Choice_Types/Refined_Types/Preference_List"
 begin
 context elgamal_base
 begin
 
-datatype ('a, 'b) tupel_list = Nil | Cons "('a \<times> 'b)" "('a, 'b) tupel_list"
-(*
-definition one :: "nat" where "one =  1"
-definition zeros :: "nat list" where "zeros = replicate 0 (0::nat)"
-definition plurality_values :: "nat list" where "plurality_values = one # zeros"
-*)
+(*function to create the initial (all options get count 1(encrypted), because 0 does not work)
+Pair-List representing the Ballot where the votes are accumulated*)
+fun get_start_s :: "'grp pub_key \<Rightarrow> 'grp cipher spmf list  \<Rightarrow> ('grp cipher spmf \<times> 'grp cipher spmf) list" where
+"get_start_s pk [] = []"|
+"get_start_s pk (x # xs) = (x, (aencrypt pk (one \<G>))) # get_start_s pk xs"
 
-(*nat list is list of preferences, [1,0,0,...] for Plurality-Voting
-  Preference_List already encrypted*)(*
-fun convert_preferencelist_to_ballot :: "'a Preference_List \<Rightarrow> nat list \<Rightarrow> ('a, 'b)  ballot"
-  where
-   "convert_preferencelist_to_ballot [] _ = Nil" |
-   "convert_preferencelist_to_ballot (x # xs) (y # ys) = Cons(x, aencrypt (y)) (convert_preferencelist_to_ballot xs ys) "
-*)
-(*first ballot is new ballot to add,
- second ballot is Sum-Ballot which holds final result at the end*)(*
-fun add_ballots :: "('a, 'b) ballot \<Rightarrow>('a, 'b) ballot \<Rightarrow>('a, 'b) ballot "
-  where
-  "add_ballots [] sum_ballot = sum_ballot"|
-  "add_ballots ((option_sum, value_b) # options) sum_ballot = 
-  (case find (\<lambda>(option_sum, value_sum). option_b = option_sum) sum_ballot of
-    None \<Rightarrow> add_ballots options sum_ballot |
-    Some (option_sum, value_sum) \<Rightarrow> (option_sum,value_sum + value_b) # add ballots options sum_ballot"
-      *)
+(*function to add the second part (encrypted number) of types 'grp cipher spmf*)
+definition add_pair :: "('grp \<times> 'grp) spmf \<Rightarrow> ('grp \<times> 'grp) spmf \<Rightarrow> ('grp \<times> 'grp) spmf" where
+"add_pair x_spmf y_spmf = do {
+    (x1, x2) \<leftarrow> x_spmf;
+    (y1, y2) \<leftarrow> y_spmf;
+    return_spmf (x1, x2 \<otimes> y2)
+}"
 
-(*The Preference_List is already encrypted, this function takes the encrypted Preference_List
- finds the top-preference/first element of the Preference-List in the tupel_list representing 
- the Ballot where the votes are accumulated and adds 1 
+(*function to get the number to encrypt and add to the count as nat*)
+fun getNumber ::  "'grp cipher spmf Preference_List \<Rightarrow> 'grp cipher spmf \<Rightarrow> nat" 
+  where
+  "getNumber [] _ = 0"|
+  "getNumber xs y = length xs - rank_l xs y"
+
+(*function to get the number from getNumber as 'grp*)
+fun get_grp_number::"nat \<Rightarrow> 'grp" where
+"get_grp_number 0 = (one \<G>)"|
+"get_grp_number (Suc n) = (one \<G>) \<otimes> (get_grp_number n)"
+
+(*The Preference_List is already encrypted,
+ this function takes the encrypted Preference_List finds its first element in
+ the Pair-List representing the Ballot where the votes are accumulated and adds 1 
  (encrypted 1 because of the homomorphic adding)*)
-fun add_plurality_ballot :: "'a Preference_List \<Rightarrow> ('a, 'b) tupel_list \<Rightarrow> ('a, 'b) tupel_list"
+fun add_borda_ballot :: "'grp pub_key \<Rightarrow>'grp cipher spmf Preference_List \<Rightarrow> ('grp cipher spmf \<times> 'grp cipher spmf) list \<Rightarrow> ('grp cipher spmf \<times> 'grp cipher spmf) list"
     where
-    "add_plurality_ballot (sum_list::('a,'b) tupel_list) = sum_list"|
-    "add_plurality_ballot (x # xs) (sum_list::('a,'b) tupel_list) = 
-    (case find (\<lambda>(y,_). x = y) sum_list of
-      None \<Rightarrow> add_plurality_ballot xs(sum_list::('a,'b) tupel_list) | 
-      Some (y, count) \<Rightarrow> Cons (y,count + aencrypt(pk, 1)) # remove1 (\<lambda>(a,_).a = y) sum_list)"
+    "add_borda_ballot _ [] s = s"|
+    "add_borda_ballot pk (x # xs) s = 
+    (case find (\<lambda>(y,c). (x = y)) s of
+      None \<Rightarrow> add_borda_ballot pk xs s | 
+      Some (y, c) \<Rightarrow> let new_s = remove1 (y, c) s in
+                 (y, add_pair(c::'grp cipher spmf) (aencrypt pk (get_grp_number(getNumber(x#xs) y)))) # add_borda_ballot pk xs new_s)"
 end
 end
