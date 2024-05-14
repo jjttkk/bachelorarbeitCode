@@ -1,24 +1,12 @@
 theory verifyPlurality imports
+"verifyVote"
+"verifyEncryptionDecryption"
 "Game_Based_Crypto.Elgamal"
 "verifiedVotingRuleConstruction/theories/Compositional_Structures/Basic_Modules/Component_Types/Social_Choice_Types/Refined_Types/Preference_List"
+"verifiedVotingRuleConstruction/theories/Compositional_Structures/Basic_Modules/Component_Types/Social_Choice_Types/Refined_Types/Profile_List"
 begin
 context elgamal_base
 begin 
-
-(*function to create the initial (all options get count 1(encrypted), because 0 does not work)
-Pair-List representing the Ballot where the votes are accumulated*)
-fun get_start_s :: "'grp pub_key \<Rightarrow> 'grp cipher spmf list  \<Rightarrow> ('grp cipher spmf \<times> 'grp cipher spmf) list" where
-"get_start_s pk [] = []"|
-"get_start_s pk (x # xs) = (x, (aencrypt pk (one \<G>))) # get_start_s pk xs"
-
-(*function to add the second part (encrypted number) of types 'grp cipher spmf*)
-definition add_pair :: "'grp cipher spmf \<Rightarrow> 'grp cipher spmf \<Rightarrow> 'grp cipher spmf" where
-"add_pair x_spmf y_spmf = do {
-    (x1, x2) \<leftarrow> x_spmf;
-    (y1, y2) \<leftarrow> y_spmf;
-    return_spmf (x1, x2 \<otimes> y2)
-}"
-
 
 (*The Preference_List is already encrypted,
  this function takes the encrypted Preference_List finds its first element in
@@ -32,5 +20,21 @@ fun add_plurality_ballot :: "'grp pub_key \<Rightarrow>'grp cipher spmf Preferen
       None \<Rightarrow> add_plurality_ballot pk xs s | 
       Some (y, c) \<Rightarrow> let new_s = remove1 (y, c) s in
                  (y, add_pair(c::'grp cipher spmf) (aencrypt pk (one \<G>))) # new_s)"
+
+(*this function applys the function "add_plurality_ballot" on each element of the
+ profile list (which is a list of preference lists, but encrypt that element before mit enc_list.
+ the first element of "add_plurality_ballot" is a public key "pk", the second is the current 
+ preference list and the third is for the first round "get_start_s" called with pk and the first
+ preference list, after that it is always the output of the "add_plurality_ballot"-call before*)
+fun add_all_votes_plurality :: "'grp Profile_List \<Rightarrow> 'grp pub_key => ('grp cipher spmf \<times> 'grp cipher spmf) list \<Rightarrow> ('grp cipher spmf \<times> 'grp cipher spmf) list" 
+  where
+"add_all_votes_plurality [] pk s = s" |
+"add_all_votes_plurality (p # ps) pk s = 
+    (let 
+        encrypted_p = enc_list pk p;
+        updated_s = add_plurality_ballot pk encrypted_p s
+    in add_all_votes_plurality ps pk updated_s)"
+
+
 end
 end

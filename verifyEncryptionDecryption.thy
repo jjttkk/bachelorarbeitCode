@@ -28,10 +28,9 @@ lemma decrypt_encrypt_list:
   using assms
   apply (induction ls arbitrary: l)
    apply (simp add: dec_list_def enc_list_def fix_type_def map_spmf_bind_spmf aencrypt_def adecrypt_def)
-   apply (simp add: bind_spmf_const)
-   done
-
-
+  apply (auto simp add: dec_list_def enc_list_def fix_type_def map_spmf_bind_spmf aencrypt_def adecrypt_def)
+  apply (metis (no_types, lifting) spmf.map_comp o_def)
+  done
 
 
 
