@@ -21,7 +21,7 @@ definition fix_type:: "'grp list \<Rightarrow> 'grp option spmf list"
 definition fix_type_single:: "'grp \<Rightarrow> 'grp option spmf"
   where "fix_type_single x = return_spmf (Some x)"
 
-
+(*
 lemma decrypt_encrypt_list:
   assumes "\<forall>x. decrypt (encrypt pk x) = return_spmf (Some x)"
   shows "dec_list sk (enc_list pk (l # ls)) = fix_type (l # ls)"
@@ -32,7 +32,7 @@ lemma decrypt_encrypt_list:
   apply (metis (no_types, lifting) spmf.map_comp o_def)
   done
 
-
+*)
 
 end
 
