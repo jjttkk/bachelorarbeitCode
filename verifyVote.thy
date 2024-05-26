@@ -10,9 +10,9 @@ begin
 (*function to add the second part (encrypted number) of types 'grp cipher spmf
  used in verifyPlurality and verifyBorda*)
 definition add_pair :: "('grp \<times> 'grp) spmf \<Rightarrow> ('grp \<times> 'grp) spmf \<Rightarrow> ('grp \<times> 'grp) spmf" where
-"add_pair x_spmf y_spmf = do {
-    (x1, x2) \<leftarrow> x_spmf;
-    (y1, y2) \<leftarrow> y_spmf;
+"add_pair x y = do {
+    (x1, x2) \<leftarrow> x;
+    (y1, y2) \<leftarrow> y;
     return_spmf (x1, x2 \<otimes> y2)
 }"
 
@@ -22,18 +22,23 @@ fun get_start_s :: "'grp pub_key \<Rightarrow> 'grp cipher spmf list  \<Rightarr
 "get_start_s pk [] = []"|
 "get_start_s pk (x # xs) = (x, (aencrypt pk (one \<G>))) # get_start_s pk xs"
 
+
+function get_number_from_grp::"'grp \<Rightarrow> nat" where
+"get_number_from_grp g = (if g = one \<G> then 0 else Suc (get_number_from_grp (g \<otimes> inv (one \<G>))))"
+  by pat_completeness auto
+
+
 (*function which takes the result pair-list of the vote from add_all_votes_plurality or 
- add_all_votes_borda and calculates the maximum amount of votes an option got
+ add_all_votes_borda and calculates the maximum amount of votes an option got,
  therefore it has to create a new list consisting of the second parts of the pairs of the first list
  decrypt this list with dec_list and transfer the type to num
- then the Max function from Isabelle Main can find the maximum*)
+ then the Max function from Isabelle Main can find the maximum
 fun get_max :: "('grp cipher spmf \<times> 'grp cipher spmf) list \<Rightarrow> 'grp priv_key \<Rightarrow> nat" where
 "get_max [] _ = 0" |
 "get_max s sk = (
         second_parts = map snd s;
         decrypted_values = map (\<lambda>c. map_spmf (adecrypt sk) c) second_parts;
-        num_values = ... from decrypted_values;
-        all_values = ...
+       
 )"
 
 (*function which takes the result pair-list of the vote from add_all_votes_plurality or 
@@ -54,7 +59,7 @@ fun get_winners :: "('grp cipher spmf \<times> 'grp cipher spmf) list \<Rightarr
         max_vote = get_max s sk;
         winners = filter ... decrypted_pairs
     in map (\<lambda>(f, _). f) winners
-)"
+)"*)
 
 end
 end
