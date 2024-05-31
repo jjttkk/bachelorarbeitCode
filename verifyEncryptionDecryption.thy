@@ -12,13 +12,14 @@ definition fix_type:: "'grp list \<Rightarrow> 'grp option spmf list"
 definition fix_type_single:: "'grp \<Rightarrow> 'grp option spmf"
   where "fix_type_single x = return_spmf (Some x)"
 
+(* Function to encrypt a list of group elements using the given public key *)
 fun enc_list :: "'grp pub_key \<Rightarrow> 'grp list \<Rightarrow> ('grp cipher spmf) list" 
   where
    "enc_list pk [] = []" |
    "enc_list pk (x # xs) = (aencrypt pk x) # enc_list pk xs"
 
-
-
+(* Function to decrypt a list of encrypted group elements using the given private key
+   Returns a list of optional group elements, where None represents a failed decryption *)  
 fun dec_list :: "'grp priv_key \<Rightarrow> ('grp cipher spmf) list \<Rightarrow> 'grp option list"
   where 
     "dec_list sk [] = []" |
@@ -38,35 +39,7 @@ qed
 
 lemma dec_list_correct:
   "dec_list sk (map (aencrypt pk) xs) = map (adecrypt sk) (map (aencrypt pk) xs)"
-proof (induction xs)
-  case Nil
-  then show ?case by simp
-next
-  case (Cons x xsmap_option
-  then show ?case
-    by (simp add: dec_list.simps adecrypt_def split: option.splits)
-qed
 
-
-(* Function to encrypt a list of elements using Elgamal-Encryption from Game Based Crypto 
-fun enc_list :: "'grp pub_key \<Rightarrow> 'grp list \<Rightarrow> 'grp cipher list spmf"
-  where
-    "enc_list _ [] = return_spmf []" |
-    "enc_list pub_key (x # xs) = do {
-      enc_x \<leftarrow> aencrypt pub_key x;
-      enc_xs \<leftarrow> enc_list pub_key xs;
-      return_spmf (enc_x # enc_xs)
-    }"
-
-(* Function to decrypt a list of elements using Elgamal-Decryption from Game Based Crypto *)
-fun dec_list :: "'grp priv_key \<Rightarrow> 'grp cipher list \<Rightarrow> 'grp list option"
-  where
-    "dec_list _ [] = Some []" |
-    "dec_list priv_key (x # xs) = (case adecrypt priv_key x of
-      None \<Rightarrow> None |
-      Some val_x \<Rightarrow> (case dec_list priv_key xs of
-                      None \<Rightarrow> None |
-                      Some dec_xs \<Rightarrow> Some (val_x # dec_xs)))"*)
 
 
 end
