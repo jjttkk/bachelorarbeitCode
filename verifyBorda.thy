@@ -16,27 +16,27 @@ fun add_borda_ballot :: "'grp pub_key \<Rightarrow>'grp enclist \<Rightarrow> 'g
     (case find (\<lambda>(y,c). (x = y)) s of
       None \<Rightarrow> add_borda_ballot pk xs s | 
       Some (y, c) \<Rightarrow> let new_s = remove1 (y, c) s in
-                 (y, add_pair(c::'grp cipher spmf) (aencrypt pk (get_grp_number(get_number(x#xs) y)))) # add_borda_ballot pk xs new_s)"
+                 (y, add_pair(c::'grp cipher spmf) (aencrypt pk (get_grp_number(get_rank_num(x#xs) y)))) # add_borda_ballot pk xs new_s)"
 
 (* Function to determine the result of the election using Borda voting *)
 fun determine_election_result_borda :: "'grp priv_key \<Rightarrow> 'grp pub_key \<Rightarrow> 'grp Profile_List \<Rightarrow> 'grp declist" where
   "determine_election_result_borda sk pk profile_list = 
     filter_by_max 
       (find_max 
-        (convert_to_numbers 
-          (extract_and_decrypt_seconds sk 
+        (convert_to_num 
+          (decrypt_2nds sk 
             (add_all_votes add_borda_ballot 
-              (encrypt_profile_list pk profile_list) pk 
+              (enc_profile_list pk profile_list) pk 
               (get_start_s pk (enc_list pk (hd profile_list)))))))
       (zip 
-        (extract_and_decrypt_firsts sk 
+        (decrypt_1sts sk 
           (add_all_votes add_borda_ballot 
-            (encrypt_profile_list pk profile_list) pk 
+            (enc_profile_list pk profile_list) pk 
             (get_start_s pk (enc_list pk (hd profile_list))))) 
-        (convert_to_numbers 
-          (extract_and_decrypt_seconds sk 
+        (convert_to_num 
+          (decrypt_2nds sk 
             (add_all_votes add_borda_ballot 
-              (encrypt_profile_list pk profile_list) pk 
+              (enc_profile_list pk profile_list) pk 
               (get_start_s pk (enc_list pk (hd profile_list)))))))"
 
 end

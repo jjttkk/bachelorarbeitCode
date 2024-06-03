@@ -23,20 +23,20 @@ fun determine_election_result_plurality :: "'grp priv_key \<Rightarrow> 'grp pub
   "determine_election_result_plurality sk pk profile_list = 
     filter_by_max 
       (find_max 
-        (convert_to_numbers 
-          (extract_and_decrypt_seconds sk 
+        (convert_to_num 
+          (decrypt_2nds sk 
             (add_all_votes add_plurality_ballot 
-              (encrypt_profile_list pk profile_list) pk 
+              (enc_profile_list pk profile_list) pk 
               (get_start_s pk (enc_list pk (hd profile_list)))))))
       (zip 
-        (extract_and_decrypt_firsts sk 
+        (decrypt_1sts sk 
           (add_all_votes add_plurality_ballot 
-            (encrypt_profile_list pk profile_list) pk 
+            (enc_profile_list pk profile_list) pk 
             (get_start_s pk (enc_list pk (hd profile_list))))) 
-        (convert_to_numbers 
-          (extract_and_decrypt_seconds sk 
+        (convert_to_num 
+          (decrypt_2nds sk 
             (add_all_votes add_plurality_ballot 
-              (encrypt_profile_list pk profile_list) pk 
+              (enc_profile_list pk profile_list) pk 
               (get_start_s pk (enc_list pk (hd profile_list)))))))"
 
 end
