@@ -97,7 +97,8 @@ ____________________________________________________
 definition find_max :: "nat list \<Rightarrow> nat" where
   "find_max ns = Max (set ns)"
 
-(* Function to filter a list of pairs by a maximum value, keeping only pairs with the maximum value as the second element *)
+(* Function to filter a list of pairs by a maximum value, keeping only pairs with the maximum 
+   value as the second element *)
 fun filter_by_max :: "nat \<Rightarrow> ('grp option \<times> nat) list \<Rightarrow> 'grp declist" where
   "filter_by_max _ [] = []" |
   "filter_by_max max_val ((x, n) # xs) = 
@@ -121,6 +122,72 @@ fun create_dec_pairs :: "'grp declist \<Rightarrow> 'grp declist \<Rightarrow> '
   "create_dec_pairs (x # xs) [] = []" |
   "create_dec_pairs [] (y # ys) = []"|
   "create_dec_pairs (x # xs) (y # ys) = (x, y) # create_dec_pairs xs ys"
+
+
+
+
+(*______________________________________________________________________________________________
+LEMMAS
+________________________________________________________________________________________________*)
+
+lemma find_max_correct:
+  assumes "xs \<noteq> []"
+  shows "find_max xs = Max (set xs)"
+  using assms
+  by (simp add: find_max_def)
+
+(*
+lemma filter_by_max_correct:
+  assumes "max_val = find_max (map snd xs)"
+  shows "filter_by_max max_val xs = map fst (filter (\<lambda>(x, n). n = max_val) xs)"
+  using assms enc_list_correct 
+  apply (simp add: filter_by_max.simps)
+  sorry
+ *)
+
+
+lemma enc_profile_list_correct:
+  "enc_profile_list pk ps = map (enc_list pk) ps"
+  by (induction ps, auto)
+
+lemma add_all_votes_correct:
+  "add_all_votes add_ballot ps pk s = foldl (\<lambda>acc p. add_ballot pk p acc) s ps"
+  by (induction ps arbitrary: s, auto)
+
+lemma get_start_s_correct:
+  "get_start_s pk xs = map (\<lambda>x. (x, aencrypt pk (one \<G>))) xs"
+  by (induction xs, auto)
+
+lemma add_pair_correct:
+  "add_pair x y = do {
+    (x1, x2) \<leftarrow> x;
+    (y1, y2) \<leftarrow> y;
+    return_spmf (x1, x2 \<otimes> y2)
+  }"
+  unfolding add_pair_def by simp
+
+lemma get_rank_num_correct:
+  "get_rank_num xs y = length xs - rank_l xs y"
+  by (induction xs) auto
+
+lemma convert_to_num_correct:
+  "convert_to_num xs = map (\<lambda>x. case x of None \<Rightarrow> 0 | Some g \<Rightarrow> get_nat_from_grp g) xs"
+  by (induction xs) auto
+
+lemma decrypt_1sts_correct:
+  "decrypt_1sts sk xs = map (\<lambda>(c, _). case (map_option (\<lambda>y. adecrypt sk y) (the_elem c)) of
+    None \<Rightarrow> None | Some None \<Rightarrow> None | Some (Some msg) \<Rightarrow> Some msg) xs"
+  by (induction xs) auto
+
+lemma decrypt_2nds_correct:
+  "decrypt_2nds sk xs = map (\<lambda>(_, c). case (map_option (\<lambda>y. adecrypt sk y) (the_elem c)) of
+    None \<Rightarrow> None | Some None \<Rightarrow> None | Some (Some msg) \<Rightarrow> Some msg) xs"
+  by (induction xs) auto
+
+lemma create_dec_pairs_correct:
+  "create_dec_pairs xs ys = zip xs ys"
+  by (induction xs ys rule: create_dec_pairs.induct) auto
+
 
 
 end

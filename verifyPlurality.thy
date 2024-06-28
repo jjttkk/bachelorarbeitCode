@@ -39,5 +39,49 @@ fun determine_election_result_plurality :: "'grp priv_key \<Rightarrow> 'grp pub
               (enc_profile_list pk profile_list) pk 
               (get_start_s pk (enc_list pk (hd profile_list)))))))"
 
+
+
+
+
+
+
+
+lemma add_plurality_ballot_correct:
+  "add_plurality_ballot pk xs s = (if xs = [] then s else
+     let (y, c) = SOME (y, c). member (x, y) s in
+     (y, add_pair c (aencrypt pk (one \<G>))) # remove1 (y, c) s)"
+proof (induction xs)
+  case Nil
+  then show ?case by simp
+  next
+  case (Cons x xs)
+  then show ?case by (cases "find (member) (x, y) s"; simp add: split_def)
+qed
+
+
+
+
+lemma determine_election_result_plurality_correct:
+  assumes "valid_profile_list profile_list"
+  shows "determine_election_result_plurality sk pk profile_list = 
+          filter_by_max 
+      (find_max 
+        (convert_to_num 
+          (decrypt_2nds sk 
+            (add_all_votes add_plurality_ballot 
+              (enc_profile_list pk profile_list) pk 
+              (get_start_s pk (enc_list pk (hd profile_list)))))))
+      (zip 
+        (decrypt_1sts sk 
+          (add_all_votes add_plurality_ballot 
+            (enc_profile_list pk profile_list) pk 
+            (get_start_s pk (enc_list pk (hd profile_list))))) 
+        (convert_to_num 
+          (decrypt_2nds sk 
+            (add_all_votes add_plurality_ballot 
+              (enc_profile_list pk profile_list) pk 
+              (get_start_s pk (enc_list pk (hd profile_list)))))))"
+  using assms
+  by (simp add: determine_election_result_plurality.simps)
 end
 end

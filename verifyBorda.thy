@@ -39,5 +39,35 @@ fun determine_election_result_borda :: "'grp priv_key \<Rightarrow> 'grp pub_key
               (enc_profile_list pk profile_list) pk 
               (get_start_s pk (enc_list pk (hd profile_list)))))))"
 
+
+
+
+
+
+
+
+
+lemma determine_election_result_borda_correct:
+  assumes "valid_profile_list profile_list"
+  shows "determine_election_result_borda sk pk profile_list = 
+         filter_by_max 
+      (find_max 
+        (convert_to_num 
+          (decrypt_2nds sk 
+            (add_all_votes add_borda_ballot 
+              (enc_profile_list pk profile_list) pk 
+              (get_start_s pk (enc_list pk (hd profile_list)))))))
+      (zip 
+        (decrypt_1sts sk 
+          (add_all_votes add_borda_ballot 
+            (enc_profile_list pk profile_list) pk 
+            (get_start_s pk (enc_list pk (hd profile_list))))) 
+        (convert_to_num 
+          (decrypt_2nds sk 
+            (add_all_votes add_borda_ballot 
+              (enc_profile_list pk profile_list) pk 
+              (get_start_s pk (enc_list pk (hd profile_list)))))))"
+  using assms
+  by (simp add: determine_election_result_borda.simps)
 end
 end
